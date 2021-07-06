@@ -19,7 +19,7 @@ Workout.init(
       type: DataTypes.STRING,
     },
     reps: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
     date_created: {
       type: DataTypes.DATE,

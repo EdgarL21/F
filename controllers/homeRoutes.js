@@ -1,12 +1,12 @@
 const router = require('express').Router();
-const { Project, User } = require('../models');
+const { Workout, User } = require('../models');
 const withAuth = require('../utils/auth');
 
 // this route show all the current posts made by users
 router.get('/', async (req, res) => {
   try {
     // Get all projects and JOIN with user data
-    const projectData = await Project.findAll({ 
+    const workoutData = await Workout.findAll({ 
       include: [
         {
           model: User,
@@ -16,11 +16,11 @@ router.get('/', async (req, res) => {
     });
 
     // Serialize data so the template can read it
-    const projects = projectData.map((project) => project.get({ plain: true }));
+    const workouts = workoutData.map((project) => project.get({ plain: true }));
 
     // Pass serialized data and session flag into template
     res.render('homepage', { 
-      projects, 
+      workouts, 
       logged_in: req.session.logged_in 
     });
   } catch (err) {
@@ -29,9 +29,9 @@ router.get('/', async (req, res) => {
 });
 
 // if a post is clicked this shows information on that specific post tha was clicked
-router.get('/project/:id', async (req, res) => {
+router.get('/workout/:id', async (req, res) => {
   try {
-    const projectData = await Project.findByPk(req.params.id, {
+    const workoutData = await Workout.findByPk(req.params.id, {
       include: [
         {
           model: User,
@@ -40,10 +40,10 @@ router.get('/project/:id', async (req, res) => {
       ],
     });
 
-    const project = projectData.get({ plain: true });
+    const workout = workoutData.get({ plain: true });
 
-    res.render('project', {
-      ...project,
+    res.render('workout', {
+      ...workout,
       logged_in: req.session.logged_in
     });
   } catch (err) {

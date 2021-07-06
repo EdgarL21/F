@@ -1,37 +1,42 @@
 const router = require('express').Router();
-const { Project } = require('../../models');
+const { Workout } = require('../../models');
 const withAuth = require('../../utils/auth');
 
 // this route allows us to create a new project
 router.post('/', withAuth, async (req, res) => {
   try {
-    const newProject = await Project.create({
+    const newWorkout = await Workout.create({
       ...req.body,
       user_id: req.session.user_id,
     });
 
-    res.status(200).json(newProject);
+    res.status(200).json(newWorkout);
   } catch (err) {
     res.status(400).json(err);
   }
 });
 
+// this rpute allows you to update an existing route
+router.put('/:id', withAuth, async (req, res) => {
+
+});
+
 // this route allows you to delete an existing project
 router.delete('/:id', withAuth, async (req, res) => {
   try {
-    const projectData = await Project.destroy({
+    const workoutData = await Workout.destroy({
       where: {
         id: req.params.id,
         user_id: req.session.user_id,
       },
     });
 
-    if (!projectData) {
-      res.status(404).json({ message: 'No project found with this id!' });
+    if (!workoutData) {
+      res.status(404).json({ message: 'No workout found with this id!' });
       return;
     }
 
-    res.status(200).json(projectData);
+    res.status(200).json(workoutData);
   } catch (err) {
     res.status(500).json(err);
   }
